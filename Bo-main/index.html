@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小博</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #3a89ce;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        #login {
+            width: 100%;
+            max-width: 350px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        #login:hover {
+            transform: translateY(-5px);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        .form-item {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #3a89ce;
+            box-shadow: 0 0 0 2px rgba(58, 137, 206, 0.2);
+        }
+        
+        input.error {
+            border-color: #e74c3c;
+        }
+        
+        input.success {
+            border-color: #2ecc71;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3a89ce;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #2d70b3;
+        }
+        
+        .message {
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+        }
+        
+        .success-message {
+            color: #2ecc71;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div id="login">
+        <h1>💗你爱我吗💗</h1>
+        <form id="loginForm">
+            <div class="form-item">
+                
+                <input type="text" id="username" name="username" placeholder="小博">
+                <div class="message error-message" id="usernameError">能不能认真输入！！！</div>
+            </div>
+            <button type="submit" id="checkBtn">验证</button>
+            <div class="message success-message" id="successMessage"></div>
+        </form>
+    </div>
+    <script>
+        // 设定正确的验证内容
+        const correctAnswer = "爱你";
+        
+        const loginForm = document.getElementById("loginForm");
+        const usernameInput = document.getElementById("username");
+        const usernameError = document.getElementById("usernameError");
+        const successMessage = document.getElementById("successMessage");
+        
+        // 验证输入内容
+        function validateInput(inputValue) {
+            // 清除之前的样式和消息
+            usernameInput.classList.remove("error", "success");
+            usernameError.style.display = "none";
+            successMessage.style.display = "none";
+            
+            // 检查是否为空
+            if (inputValue.trim() === "") {
+                usernameError.textContent = "为什么不爱我？";
+                usernameError.style.display = "block";
+                usernameInput.classList.add("error");
+                return false;
+            }
+            
+            // 检查是否与正确答案匹配
+            if (inputValue.trim() !== correctAnswer) {
+                usernameError.textContent = "能不能认真输入！！！";
+                usernameError.style.display = "block";
+                usernameInput.classList.add("error");
+                return false;
+            }
+            
+            // 验证通过
+            usernameInput.classList.add("success");
+            return true;
+        }
+        
+        // 表单提交事件
+        loginForm.addEventListener("submit", function(e) {
+            e.preventDefault(); // 阻止表单默认提交行为
+            
+            const inputValue = usernameInput.value;
+            
+            if (validateInput(inputValue)) {
+                // 验证成功
+                successMessage.textContent = "💗嘻嘻,我也爱你呀宝宝💗";
+                successMessage.style.display = "block";
+
+                
+                // 3秒后跳转链接（在当前窗口打开）
+                setTimeout(() => {
+                    window.location.href = "./个人网站/index.html";
+                }, 3000); // 3000毫秒 = 3秒
+            }
+        });
+        
+        // 输入时实时验证
+        usernameInput.addEventListener("input", function() {
+            // 输入时清除成功消息
+            successMessage.style.display = "none";
+        });
+        
+        // 失去焦点时验证
+        usernameInput.addEventListener("blur", function() {
+            if (this.value.trim() !== "") {
+                validateInput(this.value);
+            }
+        });
+    </script>
+</body>
+</html>
